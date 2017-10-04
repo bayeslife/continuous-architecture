@@ -1,4 +1,29 @@
-## Verifable Architectural
+## Verifiable Architecture Constraints
+
+
+## Product-service-resource Mapping
+
+As an architect I want every product to be related to resource or CFS so that I can ensure that dependencies are met.
+As an architect I want every cfs to be associated with 1 or more rfs so that I can ensure that dependencies are met.
+
+
+## Qualification
+
+As an architect I want services with associated qualifications to be available to those who take orders for product involving those services.
+
+## Ordering
+
+As an architect I want a service to be available to order each product so that I know it is orderable.
+As an architect I want a service to be available to capture the customer details so that the customer can be billed and supported.
+
+
+## Provisioning
+
+As an architect I want a service to be available to process the order so that the service can be provisioned.
+
+## Service mapping
+
+As an architect I want to ensure that all physical services are mapped to components so that I can ensure they are realizable.
 
 ## Inventory alignment
 
@@ -8,9 +33,15 @@ A solution can reference services which are identified as in production, in deve
 
 This verification step can itemize that all solution services are identified as being on one of these 3 states.
 
+
+### Capacity Verification
+
+Load onto particular components is usually a cumulative effect where it is useful to compare the volume provided by other products/services compared to a new product/service.
+
+
 ### Security Zones
 
-What zone should a service be placed in?
+Are services placed in the correct zones?
 
 If the service is consumed by the Customer or Supplier its in the DMZ.
 If the service produces a user interface, its presentation.
@@ -27,4 +58,4 @@ Is all logical connectivity supported by underlying physical connectivity?
 
 ### Service Specification completeness
 
-For the dependencies of a product in terms of services, are all characteristics captured via the order process, defaulted by the specfication or supplied by references.
+For the dependencies of a product in terms of services, are all characteristics captured via the order process, defaulted by the specification or supplied by references.

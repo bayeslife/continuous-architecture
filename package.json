@@ -1,0 +1,29 @@
+{
+  "name": "continuous-architecture",
+  "version": "0.0.1",
+  "description": "A library of architectural verifications",
+  "main": "index.js",
+  "dependencies": {
+    "alasql": "^0.4.2",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.0"
+  },
+  "watch": {
+    "w": {
+      "patterns": [
+        "*.js",
+        "test"
+      ],
+      "extensions": "js,jsx,hbs,ts,json,css"
+    }
+  },
+  "scripts": {
+    "w": "mocha",
+    "test": "mocha"
+  },
+  "author": "Phil Tomlinson",
+  "license": "ISC",
+  "homepage": "https://github.com/bayeslife/continuous-architecture"
+}
