@@ -1,4 +1,4 @@
-#  Continous Architecture
+#  Continuous Architecture
 
 The goal with continuous architecture is to facilitate a population of architects working together to design solutions that are consistent with each other.
 
@@ -16,11 +16,21 @@ The second is needed to inform and influence stakeholders in making business dec
 
 The third is a mechanism to allow architects to govern the services which are released to ensure consistency with design.
 
+## Usage
+
+Clone the repository
+Run npm install
+
+
 ## Verifications
 
-Here is a list of verifications which can be realized to acheive the outcomes.
+This module publishes a set of verifications intended to be used within the pipeline.
+
+Here is a list of verifications which can be realized to achieve the outcomes.
 
 [see Verifications](./Verifications.md)
+
+
 
 ## Components
 

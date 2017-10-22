@@ -1,0 +1,18 @@
+[
+  {
+    "type": "CFSType",
+    "id": "{6F8826D3-9ADB-4e8c-82F3-4EE347DC7331}",
+    "name": "CFSType1",
+    "description": "",
+    "min": 1,
+    "parent": "null"
+  },
+  {
+    "type": "Customer Facing Service Specification",
+    "id": "{B96F6C48-5C54-407e-97F1-7362B20174BD}",
+    "name": "CFS1",
+    "description": "",
+    "min": 2,
+    "parent": "{6F8826D3-9ADB-4e8c-82F3-4EE347DC7331}"
+  }
+]

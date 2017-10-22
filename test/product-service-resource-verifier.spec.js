@@ -1,7 +1,7 @@
 var assert = require('assert');
 
 var solution_data = require("../src/js/solutiondata");
-var verifier = require("../src/js/product-service-resource-verifier");
+var verifier = require("../src/js/verifiers/product-service-resource-verifier");
 
 
 var productid = 'productid';
@@ -22,8 +22,8 @@ describe('Given a product and no services and no resources', function() {
         productspec.released = true;
       })
       it('Then productspec is not valid', function() {
-        var result = verifier.verify(productspec,sd)
-        assert(!result.status);
+        var result = verifier.verify(sd)
+        assert(!result[0].status);
       });
     });
 })
@@ -39,8 +39,8 @@ describe('Given a product', function() {
           sd.addPSCFS(productspec,cfs)
       })
       it('Then product is valid', function() {
-        var result = verifier.verify(productspec,sd)
-        assert(result.status);
+        var result = verifier.verify(sd)
+        assert(result[0].status);
       });
     });
 })
@@ -56,8 +56,8 @@ describe('Given a product', function() {
         sd.addPSResource(productspec,rs);
       })
       it('Then product is valid', function() {
-        var result = verifier.verify(productspec,sd)
-        assert(result.status);
+        var result = verifier.verify(sd)
+        assert(result[0].status);
       });
     });
 })

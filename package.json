@@ -5,23 +5,30 @@
   "main": "index.js",
   "dependencies": {
     "alasql": "^0.4.2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "yargs": "^9.0.1"
   },
   "devDependencies": {
     "mocha": "^3.5.0"
   },
   "watch": {
-    "w": {
+    "test": {
       "patterns": [
         "*.js",
         "test"
       ],
       "extensions": "js,jsx,hbs,ts,json,css"
+    },
+    "validate": {
+      "patterns": [
+        "*.json"
+      ]
     }
   },
   "scripts": {
-    "w": "mocha",
-    "test": "mocha"
+    "w": "",
+    "test": "mocha --recursive",
+    "validate" : "node src/js/cli.js --solutiondata src/data cfsrfs validate"
   },
   "author": "Phil Tomlinson",
   "license": "ISC",

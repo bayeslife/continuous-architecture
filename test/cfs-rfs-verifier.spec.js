@@ -1,7 +1,7 @@
 var assert = require('assert');
 
 var solution_data = require("../src/js/solutiondata");
-var verifier = require("../src/js/cfs-rfs-verifier");
+var verifier = require("../src/js/verifiers/cfs-rfs-verifier");
 
 var cfsid = 'cfsid';
 var rfsid = 'rfsid';
@@ -18,8 +18,8 @@ describe('Given a service and no related rfs', function() {
         cfs.released = true;
       })
       it('Then service is not valid', function() {
-        var result = verifier.verify(cfs,sd)
-        assert(!result.status);
+        var result = verifier.verify(sd)
+        assert(!result[0].status);
       });
     });
 })
@@ -37,8 +37,8 @@ describe('Given a cfs', function() {
         sd.addCFSRFS(cfs,rfs);
       })
       it('Then service is valid', function() {
-        var result = verifier.verify(cfs,sd)
-        assert(result.status);
+        var result = verifier.verify(sd)
+        assert(result[0].status);
       });
     });
 })
