@@ -2,7 +2,7 @@
 var debug = require('debug')('verify');
 
 
-function verifyProductRelatesToServiceOrResource(solution_data){
+function verifyProductRelatesToServiceOrResource(argv,solution_data){
   return solution_data.pss.map(function(ps){
     var cfs = solution_data.cfs_for_ps(ps,solution_data)
     if(cfs.length>0){
@@ -17,24 +17,13 @@ function verifyProductRelatesToServiceOrResource(solution_data){
       }
     }
     return {
-      status: false
+      status: false,
+      description: "A PS identified by "+ps.name+" is not associated with cfs"
     }
   })
 }
 
-function verifyCli(argv){
-  console.log('here'+ argv.psid);
-
-}
-
 module.exports = {
   verify: verifyProductRelatesToServiceOrResource,
-  command: 'pscfsres',
-  describe: 'As an architect I want product spec to relate to cfs and/or  resource so that I know product specifications are realizeable.',
-  builder: {
-    psid: {
-      default: 'ps1'
-    }
-  },
-  handler: verifyCli
-}
+  describe: 'As an architect I want product spec to relate to cfs and/or  resource so that I know product specifications are realizeable.'
+  }

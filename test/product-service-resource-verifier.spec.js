@@ -8,6 +8,7 @@ var productid = 'productid';
 var serviceid = 'cfsid';
 var resourceid = 'resourceid';
 
+var options = {};
 
 var sd;
 var productspec = null;
@@ -22,7 +23,7 @@ describe('Given a product and no services and no resources', function() {
         productspec.released = true;
       })
       it('Then productspec is not valid', function() {
-        var result = verifier.verify(sd)
+        var result = verifier.verify(options,sd)
         assert(!result[0].status);
       });
     });
@@ -39,7 +40,7 @@ describe('Given a product', function() {
           sd.addPSCFS(productspec,cfs)
       })
       it('Then product is valid', function() {
-        var result = verifier.verify(sd)
+        var result = verifier.verify(options,sd)
         assert(result[0].status);
       });
     });
@@ -56,7 +57,7 @@ describe('Given a product', function() {
         sd.addPSResource(productspec,rs);
       })
       it('Then product is valid', function() {
-        var result = verifier.verify(sd)
+        var result = verifier.verify(options,sd)
         assert(result[0].status);
       });
     });

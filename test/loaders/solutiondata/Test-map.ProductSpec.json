@@ -1,0 +1,13 @@
+[
+  {
+    "source": "{27CC6ABE-0099-4fc8-B0D0-B92084EEC71A}",
+    "sourcename": "PS1",
+    "sourceclass": "ProductSpec",
+    "target": "{B96F6C48-5C54-407e-97F1-7362B20174BD}",
+    "targetname": "CFS1",
+    "targetclass": "Customer Facing Service Specification",
+    "value": "1",
+    "type": "Association",
+    "stereotype": ""
+  }
+]

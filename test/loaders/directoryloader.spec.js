@@ -4,7 +4,7 @@ var solution_data = require("../../src/js/solutiondata");
 var loader = require("../../src/js/loader/directoryloader");
 
 var options = {
-  "directory": "../../../test/loaders/solutiondata"
+  "directory": "/test/loaders/solutiondata"
 }
 
 describe('Given a directory containing solution data', function() {

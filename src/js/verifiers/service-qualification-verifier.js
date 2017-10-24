@@ -1,7 +1,7 @@
 
 var debug = require('debug')('verify');
 
-function verifyQualificationServicesAvailable(solution_data){
+function verifyQualificationServicesAvailable(argv,solution_data){
   var result = solution_data.pss.map(function(productspec){
     var status = false;
     var rfss = solution_data.rfss_for_productspec(productspec);
@@ -17,7 +17,7 @@ function verifyQualificationServicesAvailable(solution_data){
     return {
       status: status
     }
-  })  
+  })
   return result;
 }
 

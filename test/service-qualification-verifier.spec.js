@@ -11,6 +11,8 @@ var rfsid = 'rfsid';
 var qualificationid = 'qualificationid';
 var componentid = 'componentid';
 
+var options = {};
+
 var init = function(){
 }
 
@@ -18,7 +20,7 @@ describe('Given a product depends upon a CFS and RFS And the RFS declares a qual
     var sd = solution_data.factory();
      describe('When the product is ordered through a component which does not integrate to the service qualification service', function() {
       it('Then product is not valid', function() {
-        var result = verifier.verify(sd)
+        var result = verifier.verify(options,sd)
         assert(result.length==0);
       });
     })
@@ -40,7 +42,7 @@ describe('Given a product depends upon a CFS and RFS And the RFS declares a qual
     })
      describe('When the qualification is NOT provided by a component', function() {
         it('Then product is not valid', function() {
-          var result = verifier.verify(sd)
+          var result = verifier.verify(options,sd)
           assert(!result[0].status);
         });
       })
@@ -49,7 +51,7 @@ describe('Given a product depends upon a CFS and RFS And the RFS declares a qual
          sd.addQualificationComponent(qual,comp);
        })
         it('Then product is valid', function() {
-          var result = verifier.verify(sd)
+          var result = verifier.verify(options,sd)
           assert(result[0].status);
         });
       })

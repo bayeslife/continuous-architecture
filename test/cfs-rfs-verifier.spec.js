@@ -6,6 +6,8 @@ var verifier = require("../src/js/verifiers/cfs-rfs-verifier");
 var cfsid = 'cfsid';
 var rfsid = 'rfsid';
 
+var options = {};
+
 describe('Given a service and no related rfs', function() {
     var sd = null;
     beforeEach(function(){
@@ -18,7 +20,7 @@ describe('Given a service and no related rfs', function() {
         cfs.released = true;
       })
       it('Then service is not valid', function() {
-        var result = verifier.verify(sd)
+        var result = verifier.verify(options,sd)
         assert(!result[0].status);
       });
     });
@@ -37,7 +39,7 @@ describe('Given a cfs', function() {
         sd.addCFSRFS(cfs,rfs);
       })
       it('Then service is valid', function() {
-        var result = verifier.verify(sd)
+        var result = verifier.verify(options,sd)
         assert(result[0].status);
       });
     });

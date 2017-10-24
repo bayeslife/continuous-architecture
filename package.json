@@ -19,8 +19,9 @@
       ],
       "extensions": "js,jsx,hbs,ts,json,css"
     },
-    "validate": {
+    "noop": {
       "patterns": [
+        "*.js",
         "*.json"
       ]
     }
@@ -28,7 +29,8 @@
   "scripts": {
     "w": "",
     "test": "mocha --recursive",
-    "validate" : "node src/js/cli.js --solutiondata src/data cfsrfs validate"
+    "noop": "echo noop",
+    "validate" : "node src/js/cli.js --solutiondata /test/loaders/solutiondata validate"
   },
   "author": "Phil Tomlinson",
   "license": "ISC",
