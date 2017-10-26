@@ -24,7 +24,7 @@ describe('Given a product and no services and no resources', function() {
       })
       it('Then productspec is not valid', function() {
         var result = verifier.verify(options,sd)
-        assert(!result[0].status);
+        assert(result.length>0);
       });
     });
 })
@@ -41,7 +41,7 @@ describe('Given a product', function() {
       })
       it('Then product is valid', function() {
         var result = verifier.verify(options,sd)
-        assert(result[0].status);
+        assert(result.length==0);
       });
     });
 })
@@ -58,7 +58,7 @@ describe('Given a product', function() {
       })
       it('Then product is valid', function() {
         var result = verifier.verify(options,sd)
-        assert(result[0].status);
+        assert(result.length==0);
       });
     });
 })

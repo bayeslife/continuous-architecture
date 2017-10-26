@@ -43,7 +43,7 @@ describe('Given a product depends upon a CFS and RFS And the RFS declares a qual
      describe('When the qualification is NOT provided by a component', function() {
         it('Then product is not valid', function() {
           var result = verifier.verify(options,sd)
-          assert(!result[0].status);
+          assert(result.length>0);
         });
       })
      describe('When the qualification is provided by a component', function() {
@@ -52,7 +52,7 @@ describe('Given a product depends upon a CFS and RFS And the RFS declares a qual
        })
         it('Then product is valid', function() {
           var result = verifier.verify(options,sd)
-          assert(result[0].status);
+          assert(result.length==0);
         });
       })
     });

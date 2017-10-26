@@ -1,21 +1,21 @@
 
 var debug = require('debug')('verify');
 
+var _ = require('lodash');
+
 function verifyCFSRelatesToRFS(argv,solution_data){
   var r =  solution_data.cfss.map(function(cfs){
     var rfs = solution_data.rfss_for_cfs(cfs);
     debug(rfs)
     if(rfs.length>0){
-      return {
-        status:true
-      }
+      return null;
     }else {
-      return {
-        status: false,
-        description: "A CFS identified by "+cfs.id+" is not related to any RFS"
+      return {        
+        description: "A CFS identified by "+cfs.name+" is not related to any RFS"
       }
     }
-  })  
+  })
+  r = _.without(r,null)
   return r;
 }
 

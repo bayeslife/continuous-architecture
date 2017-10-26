@@ -6,6 +6,7 @@
   "dependencies": {
     "alasql": "^0.4.2",
     "lodash": "^4.17.4",
+    "underscore": "^1.8.3",
     "yargs": "^9.0.1"
   },
   "devDependencies": {
@@ -19,7 +20,7 @@
       ],
       "extensions": "js,jsx,hbs,ts,json,css"
     },
-    "noop": {
+    "validate": {
       "patterns": [
         "*.js",
         "*.json"
@@ -30,7 +31,7 @@
     "w": "",
     "test": "mocha --recursive",
     "noop": "echo noop",
-    "validate" : "node src/js/cli.js --solutiondata /test/loaders/solutiondata validate"
+    "validate": "node src/js/cli.js --solutiondata /test/loaders/solutiondata validate"
   },
   "author": "Phil Tomlinson",
   "license": "ISC",

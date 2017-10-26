@@ -1,6 +1,8 @@
 
 var debug = require('debug')('verify');
 
+var _ = require('lodash');
+
 function verifyQualificationServicesAvailable(argv,solution_data){
   var result = solution_data.pss.map(function(productspec){
     var status = false;
@@ -14,10 +16,14 @@ function verifyQualificationServicesAvailable(argv,solution_data){
       if(qualifications_with_components.length==qualifications.length)
         status = true;
     }
-    return {
-      status: status
-    }
+    if(status)
+      return null;
+    else
+      return {        
+        description: "RFS related to PS have qualifications but no component providing the qualification"
+      }
   })
+  result = _.without(result,null);
   return result;
 }
 

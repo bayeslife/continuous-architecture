@@ -3,12 +3,7 @@ var debug = require('debug')('command');
 
 var solution_data = require("../solutiondata");
 
-var cfsrfs = require('../verifiers/cfs-rfs-verifier.js');
-var pscfsres = require('../verifiers/product-service-resource-verifier.js')
-var servqual = require('../verifiers/service-qualification-verifier.js');
-
-var verifiers = [ pscfsres ];
-//var verifiers = [ cfsrfs,pscfsres,servqual ];
+var processor = require("../processor")
 
 var loader = require("../loader/directoryloader");
 
@@ -18,11 +13,8 @@ function validateCli(argv){
   loader.load(
     { directory: argv.solutiondata },
     sd);
-
-  var results = verifiers.map(function(verifier){
-    return verifier.verify(argv,sd);
-  })
-  console.log(results);
+    var results = processor.validate(argv,sd)
+    console.log(results);
 }
 
 module.exports = {
