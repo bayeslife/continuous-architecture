@@ -18,10 +18,14 @@ function verifyQualificationServicesAvailable(argv,solution_data){
     }
     if(status)
       return null;
-    else
-      return {        
+    else{
+      if(!productspec.warning) productspec.warning=[];
+      productspec.warning.push("RFS related to PS have qualifications but no component providing the qualification")
+      return {
         description: "RFS related to PS have qualifications but no component providing the qualification"
       }
+    }
+
   })
   result = _.without(result,null);
   return result;

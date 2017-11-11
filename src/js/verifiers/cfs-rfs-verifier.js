@@ -10,7 +10,11 @@ function verifyCFSRelatesToRFS(argv,solution_data){
     if(rfs.length>0){
       return null;
     }else {
-      return {        
+      if(!cfs.warning){
+        cfs.warning=[]
+      }
+      cfs.warning.push("No related RFS")
+      return {
         description: "A CFS identified by "+cfs.name+" is not related to any RFS"
       }
     }

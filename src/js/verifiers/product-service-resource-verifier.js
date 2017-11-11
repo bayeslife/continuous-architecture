@@ -14,7 +14,9 @@ function verifyProductRelatesToServiceOrResource(argv,solution_data){
     if(resources.length>0){
       return null;
     }
-    return {      
+    if(!ps.warning) ps.warning=[];
+    ps.warning.push("No associated CFS")
+    return {
       description: "A PS identified by "+ps.name+" is not associated with cfs"
     }
   })

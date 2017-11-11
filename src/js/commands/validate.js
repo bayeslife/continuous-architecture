@@ -14,7 +14,7 @@ function validateCli(argv){
     { directory: argv.solutiondata },
     sd);
     var results = processor.validate(argv,sd)
-    console.log(results);
+    //console.log(results);
 }
 
 module.exports = {

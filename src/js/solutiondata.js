@@ -13,6 +13,7 @@ var solution_data = function(){
     cfsrfss: [],
     rfss: [],
     chars: [],
+    charvalues: [],
     charsIndex: {},
     rfschars: [],
     cfsHierarchy: [],
@@ -29,9 +30,35 @@ var solution_data = function(){
     rfs_qualifications: [],
 
     chargroups: [],
+    constraints: [],
+
+    chargroup_chars: [],
+    rfs_chargroups: [],
+    char_constraints: [],
+    constraint_values: [],
+
+    clone: function() {
+      return _.clone(this);
+    },
 
     report: function(){
       console.log("CXS:"+this.cxs.length);
+    },
+
+    getPS: function(id){
+      return  _.find(this.pss,function(ps){
+        return ps.id == id;
+      })
+    },
+    getCFS: function(id){
+      return  _.find(this.cfss,function(cfs){
+        return cfs.id == id;
+      })
+    },
+    getRFS: function(id){
+      return  _.find(this.rfss,function(rfs){
+        return rfs.id == id;
+      })
     },
 
     resource_for_ps: function(productspec) {
@@ -52,12 +79,17 @@ var solution_data = function(){
     qualifications_with_components: function(qualifications){
       return ala("select qual.* from ? as qual join ? as qualcomp on qual.id=qualcomp.source",[qualifications,this.qualification_components])
     },
+    chars_for_rfs: function(rfs){
+      return ala("select char.* from ? as char join ? as chargroupchar on char.id=chargroupchar.[target] join ? as chargroup on chargroupchar.source=chargroup.id join ? as rfschargroup on chargroup.id=rfschargroup.[target] join ? as rfs on rfs.id=rfschargroup.source where rfs.id = ? ",[this.chars,this.chargroup_chars,this.chargroups, this.rfs_chargroups,this.rfss, rfs.id])
+    },
+    values_for_char: function(char){
+        return ala("select val.* from ? as val join ? as constraintvalues on val.id=constraintvalues.[target] join ? as constraints on constraintvalues.source=constraints.id join ? as charconstraints on constraints.id=charconstraints.[target] join ? as char on char.id=charconstraints.source where char.id = ? ",[this.rfss,this.constraint_values,this.constraints, this.char_constraints,this.chars, char.id])
+    },
 
     setCXs: function(data){
       this.cxs = data;
     },
     setCXCFSs: function(data){
-
       this.cxcfss = data;
     },
     setPSs: function(data){
@@ -66,7 +98,6 @@ var solution_data = function(){
       })
     },
     setCFSs: function(data){
-
       this.cfss = _.uniq(data,function(item){
         return item.id;
       })
@@ -141,6 +172,26 @@ var solution_data = function(){
       this.resources.push(instance);
       return instance;
     },
+    addChar: function(id) {
+      var instance = {id: id};
+      this.chars.push(instance);
+      return instance;
+    },
+    addCharValue: function(id) {
+      var instance = {id: id};
+      this.charvalues.push(instance);
+      return instance;
+    },
+    addCharGroup: function(id) {
+      var instance = {id: id};
+      this.chargroups.push(instance);
+      return instance;
+    },
+    addConstraint: function(id) {
+      var instance = {id: id};
+      this.constraints.push(instance);
+      return instance;
+    },
     addPSResource: function(ps,resource){
       var rel = {source: ps.id,target: resource.id}
       this.psresources.push(rel);
@@ -166,6 +217,22 @@ var solution_data = function(){
     addQualificationComponent(qualification,component){
       var rel = {source: qualification.id,target:component.id}
       this.qualification_components.push(rel);
+    },
+    addRFSCharGroup(rfs,chargroup){
+      var rel = {source: rfs.id,target:chargroup.id}
+      this.rfs_chargroups.push(rel);
+    },
+    addCharGroupChar(chargroup,char){
+      var rel = {source: chargroup.id,target:char.id}
+      this.chargroup_chars.push(rel);
+    },
+    addCharConstraint(char,constraint){
+      var rel = {source: char.id,target:constraint.id}
+      this.char_constraints.push(rel);
+    },
+    addConstraintValue(constraint,value){
+      var rel = {source: constraint.id,target:value.id}
+      this.constraint_values.push(rel);
     }
   }
 }
