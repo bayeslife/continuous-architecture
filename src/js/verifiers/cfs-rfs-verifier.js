@@ -5,7 +5,7 @@ var _ = require('lodash');
 
 function verifyCFSRelatesToRFS(argv,solution_data){
   var r =  solution_data.cfss.map(function(cfs){
-    var rfs = solution_data.rfss_for_cfs(cfs);
+    var rfs = solution_data.rfs_for_cfs(cfs);
     debug(rfs)
     if(rfs.length>0){
       return null;

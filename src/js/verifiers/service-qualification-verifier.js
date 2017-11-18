@@ -6,7 +6,7 @@ var _ = require('lodash');
 function verifyQualificationServicesAvailable(argv,solution_data){
   var result = solution_data.pss.map(function(productspec){
     var status = false;
-    var rfss = solution_data.rfss_for_productspec(productspec);
+    var rfss = solution_data.rfs_for_productspec(productspec);
     debug(rfss);
     var qualifications = solution_data.qualification_for_rfss(rfss)
     debug(qualifications);
@@ -27,7 +27,7 @@ function verifyQualificationServicesAvailable(argv,solution_data){
     }
 
   })
-  result = _.without(result,null);
+  result = _.without(result,null);  
   return result;
 }
 

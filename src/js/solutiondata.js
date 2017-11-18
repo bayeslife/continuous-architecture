@@ -1,7 +1,25 @@
+//This should be renamed to 'cataloue' as it represents a catalogue of allow possibilities.
+
 var ala = require('alasql');
 
 var debug = require('debug')('verify.solutiondata');
 var _ = require('underscore');
+
+var standardize = function(identifiers,operation){
+  var ids = identifiers;
+
+  if( ! (identifiers instanceof Array) ){
+    ids = [identifiers]
+  }
+  var res =  ids.map(function(identifier){
+    var id = identifier;
+    if(typeof identifier === 'object'){
+      id = identifier.id;
+    }
+    return operation(id);
+  })
+  return res;
+}
 
 var solution_data = function(){
   return {
@@ -60,18 +78,33 @@ var solution_data = function(){
         return rfs.id == id;
       })
     },
-
-    resource_for_ps: function(productspec) {
-      return ala("select res.* from ? as res join ? as psresource on psresource.[target]=res.id join ? as ps on psresource.source=ps.id where ps.id = ? ",[this.resources,this.psresources,this.pss, productspec.id])
+    resource_for_ps: function(productspecs) {
+      var sd = this;
+      var res =  standardize(productspecs,function(productspecid){
+        return ala("select res.* from ? as res join ? as psresource on psresource.[target]=res.id join ? as ps on psresource.source=ps.id where ps.id = ? ",[sd.resources,sd.psresources,sd.pss, productspecid])
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
-    cfs_for_ps: function(productspec) {
-      return ala("select cfs.* from ? as cfs join ? as pscfs on pscfs.[target]=cfs.id join ? as ps on pscfs.source=ps.id where ps.id = ? ",[this.cfss,this.pscfss,this.pss, productspec.id])
+    cfs_for_ps: function(productspecs) {
+      var sd = this;
+      var res =  standardize(productspecs,function(productspecid){
+        return ala("select cfs.* from ? as cfs join ? as pscfs on pscfs.[target]=cfs.id join ? as ps on pscfs.source=ps.id where ps.id = ? ",[sd.cfss,sd.pscfss,sd.pss, productspecid])
+      });
+      return res.reduce((a, b) => a.concat(b), []);
     },
-    rfss_for_cfs: function(cfs) {
-      return ala("select rfs.* from ? as rfs join ? as cfsrfs on rfs.id=cfsrfs.[target] join ? as cfs on cfsrfs.source=cfs.id where cfs.id = ? ",[this.rfss,this.cfsrfss,this.cfss, cfs.id])
+    rfs_for_cfs: function(cfss) {
+      var sd = this;
+      var res =  standardize(cfss,function(cfsid){
+        return ala("select rfs.* from ? as rfs join ? as cfsrfs on rfs.id=cfsrfs.[target] join ? as cfs on cfsrfs.source=cfs.id where cfs.id = ? ",[sd.rfss,sd.cfsrfss,sd.cfss, cfsid])
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
-    rfss_for_productspec: function(productspec) {
-      return ala("select rfs.* from ? as rfs join ? as cfsrfs on rfs.id=cfsrfs.[target] join ? as cfs on cfsrfs.source=cfs.id join ? as pscfs on pscfs.[target]=cfs.id join ? as ps on pscfs.source=ps.id where ps.id = ? ",[this.rfss,this.cfsrfss,this.cfss,this.pscfss,this.pss, productspec.id])
+    rfs_for_productspec: function(productspecs) {
+      var sd = this;
+      var res =  standardize(productspecs,function(psid){
+        return ala("select rfs.* from ? as rfs join ? as cfsrfs on rfs.id=cfsrfs.[target] join ? as cfs on cfsrfs.source=cfs.id join ? as pscfs on pscfs.[target]=cfs.id join ? as ps on pscfs.source=ps.id where ps.id = ? ",[sd.rfss,sd.cfsrfss,sd.cfss,sd.pscfss,sd.pss, psid])
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
     qualification_for_rfss: function(rfss){
       return ala("select qual.* from ? as qual join ? as rfsq on rfsq.[target]=qual.id join ? as rfs on rfs.id=rfsq.source",[this.qualifications,this.rfs_qualifications,rfss])
@@ -79,8 +112,12 @@ var solution_data = function(){
     qualifications_with_components: function(qualifications){
       return ala("select qual.* from ? as qual join ? as qualcomp on qual.id=qualcomp.source",[qualifications,this.qualification_components])
     },
-    chars_for_rfs: function(rfs){
-      return ala("select char.* from ? as char join ? as chargroupchar on char.id=chargroupchar.[target] join ? as chargroup on chargroupchar.source=chargroup.id join ? as rfschargroup on chargroup.id=rfschargroup.[target] join ? as rfs on rfs.id=rfschargroup.source where rfs.id = ? ",[this.chars,this.chargroup_chars,this.chargroups, this.rfs_chargroups,this.rfss, rfs.id])
+    chars_for_rfs: function(rfss){
+      var sd = this;
+      var res =  standardize(rfss,function(rfsid){
+        return ala("select char.* from ? as char join ? as chargroupchar on char.id=chargroupchar.[target] join ? as chargroup on chargroupchar.source=chargroup.id join ? as rfschargroup on chargroup.id=rfschargroup.[target] join ? as rfs on rfs.id=rfschargroup.source where rfs.id = ? ",[sd.chars,sd.chargroup_chars,sd.chargroups, sd.rfs_chargroups,sd.rfss, rfsid])
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
     values_for_char: function(char){
         return ala("select val.* from ? as val join ? as constraintvalues on val.id=constraintvalues.[target] join ? as constraints on constraintvalues.source=constraints.id join ? as charconstraints on constraints.id=charconstraints.[target] join ? as char on char.id=charconstraints.source where char.id = ? ",[this.rfss,this.constraint_values,this.constraints, this.char_constraints,this.chars, char.id])
@@ -148,91 +185,171 @@ var solution_data = function(){
     setCharGroups: function(data){
       this.chargroups = data;
     },
-    addPS: function(id) {
-      var productspec = {id: id};
-      this.pss.push(productspec);
-      return productspec;
+    addPS: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var productspec = {id: id};
+        sd.pss.push(productspec);
+        return productspec;
+      })
     },
-    addPSCFS: function(ps,cfs){
-      var rel = {source: ps.id,target: cfs.id}
-      this.pscfss.push(rel);
+    addPSCFS: function(pss,cfss){
+      var sd = this;
+      var res =  standardize(pss,function(psid){
+        return standardize(cfss,function(cfsid){
+          var rel = {source: psid,target: cfsid}
+          sd.pscfss.push(rel);
+          return rel
+        })
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
-    addCFS: function(serviceid) {
-      var service = {id: serviceid};
-      this.cfss.push(service);
-      return service;
+    addCFS: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var service = {id: id};
+        sd.cfss.push(service);
+        return service;
+      })
     },
-    addRFS: function(serviceid) {
-      var service = {id: serviceid};
-      this.rfss.push(service);
-      return service;
+    addRFS: function(serviceids) {
+      var sd = this;
+      return standardize(serviceids,function(serviceid){
+        var service = {id: serviceid};
+        sd.rfss.push(service);
+        return service;
+      })
     },
-    addResource: function(id) {
-      var instance = {id: id};
-      this.resources.push(instance);
-      return instance;
+    addResource: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var instance = {id: id};
+        sd.resources.push(instance);
+        return instance;
+      })
     },
-    addChar: function(id) {
-      var instance = {id: id};
-      this.chars.push(instance);
-      return instance;
+    addChar: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var instance = {id: id};
+        sd.chars.push(instance);
+        return instance;
+      })
     },
-    addCharValue: function(id) {
-      var instance = {id: id};
-      this.charvalues.push(instance);
-      return instance;
+    addCharValue: function(identifiers) {
+      var sd = this;
+      return standardize(identifiers,function(id){
+        var instance = {id: id};
+        sd.charvalues.push(instance);
+        return instance;
+      })
     },
-    addCharGroup: function(id) {
-      var instance = {id: id};
-      this.chargroups.push(instance);
-      return instance;
+    addCharGroup: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var instance = {id: id};
+        sd.chargroups.push(instance);
+        return instance;
+      })
     },
-    addConstraint: function(id) {
-      var instance = {id: id};
-      this.constraints.push(instance);
-      return instance;
+    addConstraint: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var instance = {id: id};
+        sd.constraints.push(instance);
+        return instance;
+      })
     },
-    addPSResource: function(ps,resource){
-      var rel = {source: ps.id,target: resource.id}
-      this.psresources.push(rel);
+    addPSResource: function(pss,resources){
+      var sd = this;
+      var res = standardize(pss,function(psid){
+        return standardize(resources,function(resourceid){
+          var rel = {source: psid,target: resourceid}
+          sd.psresources.push(rel);
+          return rel;
+        })
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
-    addQualification: function(id) {
-      var instance = {id: id};
-      this.qualifications.push(instance);
-      return instance;
+    addQualification: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var instance = {id: id};
+        sd.qualifications.push(instance);
+        return instance;
+      })
     },
-    addComponent: function(id) {
-      var instance = {id: id};
-      this.components.push(instance);
-      return instance;
+    addComponent: function(ids) {
+      var sd = this;
+      return standardize(ids,function(id){
+        var instance = {id: id};
+        sd.components.push(instance);
+        return instance;
+      })
     },
-    addCFSRFS: function(cfs,rfs){
-      var rel = {source: cfs.id,target: rfs.id}
-      this.cfsrfss.push(rel);
+    addCFSRFS: function(cfss,rfss){
+      var sd=this;
+      var res = standardize(cfss,function(cfsid){
+        return standardize(rfss,function(rfsid){
+          var rel = {source: cfsid,target: rfsid}
+          sd.cfsrfss.push(rel);
+          return rel;
+        })
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
     addRFSQualification(rfs,qualificationService){
       var rel = {source: rfs.id,target: qualificationService.id}
       this.rfs_qualifications.push(rel);
     },
-    addQualificationComponent(qualification,component){
-      var rel = {source: qualification.id,target:component.id}
-      this.qualification_components.push(rel);
+    addQualificationComponent(qualifications,components){
+      var sd = this;
+      var res  = standardize(qualifications,function(qualificationid){
+        return standardize(components,function(componentid){
+          var rel = {source: qualificationid,target:componentid}
+          sd.qualification_components.push(rel);
+          return rel;
+        })
+      })
+      return res.reduce((a,b)=>a.concat(b),[]);
     },
-    addRFSCharGroup(rfs,chargroup){
-      var rel = {source: rfs.id,target:chargroup.id}
-      this.rfs_chargroups.push(rel);
+    addRFSCharGroup(rfss,chargroups){
+      var sd = this;
+      var res = standardize(rfss,function(rfsid){
+        return standardize(chargroups,function(chargroupid){
+          var rel = {source: rfsid,target:chargroupid}
+          sd.rfs_chargroups.push(rel);
+          return rel;
+        })
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
-    addCharGroupChar(chargroup,char){
-      var rel = {source: chargroup.id,target:char.id}
-      this.chargroup_chars.push(rel);
+    addCharGroupChar(chargroups,chars){
+      var sd=this;
+      var res = standardize(chargroups,function(chargroupid){
+        return standardize(chars,function(charid){
+          var rel = {source: chargroupid,target:charid}
+          sd.chargroup_chars.push(rel);
+          return rel;
+        })
+      })
+      return res.reduce((a,b)=>a.concat(b),[]);
     },
-    addCharConstraint(char,constraint){
-      var rel = {source: char.id,target:constraint.id}
-      this.char_constraints.push(rel);
+    addConstraintSource(chars,constraint){
+      var sd = this;
+      return standardize(chars,function(char){
+        var rel = {source: char,target:constraint}
+        sd.char_constraints.push(rel);
+        return rel;
+      })
     },
-    addConstraintValue(constraint,value){
-      var rel = {source: constraint.id,target:value.id}
-      this.constraint_values.push(rel);
+    addConstraintTarget(constraint,values){
+      var sd = this;
+      return standardize(values,function(value){
+        var rel = {source: constraint,target:value}
+        sd.constraint_values.push(rel);
+        return rel;
+      })
     }
   }
 }

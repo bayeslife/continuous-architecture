@@ -46,12 +46,13 @@ describe('Given a product depends upon a CFS and RFS And the RFS declares a qual
           assert(result.length>0);
         });
       })
-     describe('When the qualification is provided by a component', function() {
+     describe.only('When the qualification is provided by a component', function() {
        before(function(){
          sd.addQualificationComponent(qual,comp);
        })
         it('Then product is valid', function() {
           var result = verifier.verify(options,sd)
+          console.log(result);
           assert(result.length==0);
         });
       })

@@ -4,7 +4,7 @@ var order = function(solutiondata){
     sd: solutiondata,
     previous: null,
     next: null,
-    getConfiguration: function() {      
+    getConfiguration: function() {
       return this.next;
     },
     createNext: function() {

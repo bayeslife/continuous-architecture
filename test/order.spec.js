@@ -32,8 +32,8 @@ describe('Characteristic values are constrained', function() {
       value2 = sd.addCharValue(value2id);
       psconstraint= sd.addConstraint(psconstraintid)
 
-      sd.addCharConstraint(char,constraint);
-      sd.addConstraintValue(constraint,rfs);
+      sd.addConstraintSource(char,constraint);
+      sd.addConstraintTarget(constraint,rfs);
 
       order = orderclass.factory(sd);
     })
