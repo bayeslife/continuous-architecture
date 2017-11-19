@@ -21,8 +21,16 @@ The third is a mechanism to allow architects to govern the services which are re
 Clone the repository
 Run npm install
 
+## Paradigm
 
-## Verifications
+### Solution Catalogue Data
+
+This module describes functionality with respect to a catalogue of solution data.
+
+[see SolutionData](./SolutionData.md)
+
+
+### Verifications
 
 This module publishes a set of verifications intended to be used within the pipeline.
 
@@ -32,7 +40,7 @@ Here is a list of verifications which can be realized to achieve the outcomes.
 
 
 
-## Components
+### Components
 
 Here is a proposed set of components which can be used to realize the paradigm.
 

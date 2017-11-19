@@ -22,35 +22,37 @@ describe('Characteristic values are constrained', function() {
     var psconstraintid = "ps-bandwidth-1GB"
     before(function(){
       sd = solution_data.factory();
-      ps = sd.addPS(psid);
-      cfs = sd.addCFS(cfsid);
-      rfs = sd.addRFS(rfsid);
-      chargroup = sd.addCharGroup(groupid)
-      char = sd.addChar(charid);
-      constraint= sd.addConstraint(constraintid)
-      value = sd.addCharValue(value1id);
-      value2 = sd.addCharValue(value2id);
-      psconstraint= sd.addConstraint(psconstraintid)
+      sd.addPS(psid);
+      sd.addCFS(cfsid);
+      sd.addRFS(rfsid);
+      sd.addCharGroup(groupid)
+      sd.addChar(charid);
+      sd.addConstraint(constraintid)
+      sd.addCharValue(value1id);
+      sd.addCharValue(value2id);
+      sd.addConstraint(psconstraintid)
+      sd.addRFSCharGroup(rfsid,groupid)
+      sd.addCharGroupChar(groupid,[value1id,value2id]);
 
       sd.addConstraintSource(char,constraint);
       sd.addConstraintTarget(constraint,rfs);
 
       order = orderclass.factory(sd);
     })
-    describe('When Product spec is Not selected', function() {
+    describe.skip('When Product spec is Not selected', function() {
       before(function(){
         order.selectPS(null);
       });
-      it('Then valid characterisics is simplified', function() {
-        console.log(order.getConfiguration());
-        assert.equal(order.getConfiguration().values_for_char(char).length,2)
+      it('Then all values are possible', function() {
+        assert.equal(order.getConfiguration().values_for_char(charid).length,2)
       });
     });
-    describe('When Product spec is selected', function() {
+    describe.skip('When Product spec is selected', function() {
       before("When",function(){
+        ps = sd.getPS(psid);
         order.selectPS(ps);
       });
-      it('Then valid characterisics is simplified', function() {
+      it('Then constrained characterisics available', function() {
         assert.equal(order.getConfiguration().values_for_char(char).length,1)
       });
     });

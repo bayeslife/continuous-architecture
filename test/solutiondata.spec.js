@@ -11,7 +11,13 @@ var cfsid='cfs1'
 var resourceid='resource1'
 var rfsid='rfs1'
 var charid="char1";
+var char2id="char2";
+var char3id="char3";
 var chargroupid='chargroup1'
+var chargroup2id='chargroup2'
+var constraintid='constraint1';
+var charvalue1id='charvalue1'
+var charvalue2id='charvalue2'
 
 describe('Validate queries', function() {
   var rel;
@@ -99,6 +105,52 @@ describe('Validate queries', function() {
       });
     });
   });
+  describe('Given related RFS, multiple CHARGROUPs and multiple Chars', function() {
+    beforeEach('Given',function(){
+      sd.addRFS(rfsid);
+      sd.addCharGroup(chargroupid);
+      sd.addCharGroup(chargroup2id);
+      sd.addChar(charid);
+      sd.addChar(char2id);
+      sd.addChar(char3id);
+      sd.addRFSCharGroup(rfsid,chargroupid);
+      sd.addCharGroupChar(chargroupid,[charid,char2id]);
+      sd.addRFSCharGroup(rfsid,chargroup2id);
+      sd.addCharGroupChar(chargroup2id,[char2id,char3id]);
+    })
+    describe('When Chars for the RFS are queried', function() {
+      beforeEach('When',function(){
+        rel = sd.chars_for_rfs(rfsid);
+      })
+      it('Then the appropriate Chars are returned', function() {
+        assert.equal(rel.length,3)
+      });
+    });
+  });
+})
+
+
+describe('Valid Characteristic Values', function() {
+  describe('Given a solution data', function() {
+    var rel;
+    before('Given',function(){
+      sd = solution_data.factory();
+    })
+    describe('When there is a constraint from char to specific values', function() {
+      before('When',function(){
+        sd.addChar(charid);
+        sd.addConstraint(constraintid)
+        sd.addCharValue(charvalue1id);
+        sd.addCharValue(charvalue2id);
+        sd.addConstraintSource(charid,constraintid);
+        sd.addConstraintTarget(constraintid,charvalue1id);
+      })
+      it('Then available chars are returned', function() {
+        var res = sd.values_for_char(charid);
+        assert.equal(res.length,1)
+      });
+    });
+  });
 })
 
 describe('Validate add relationships', function() {
@@ -107,12 +159,11 @@ describe('Validate add relationships', function() {
     before('Given',function(){
       sd = solution_data.factory();
     })
-    describe('When the solutiondata is cloned and the PS list is changed', function() {
+    describe('When a pair of CFS are related to PS', function() {
       before('When',function(){
         rel = sd.addPSCFS([1,2],[3,4]);
       })
-      it('Then the original solutiondata is unchanged', function() {
-        console.log(rel);
+      it('Then 4 relationships are formed', function() {
         assert.equal(rel.length,4)
       });
     });

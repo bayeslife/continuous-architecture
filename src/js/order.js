@@ -1,9 +1,10 @@
 
 var order = function(solutiondata){
-  return {
+  var result = {
     sd: solutiondata,
     previous: null,
     next: null,
+
     getConfiguration: function() {
       return this.next;
     },
@@ -22,6 +23,8 @@ var order = function(solutiondata){
       this.next.setPSs([ps]);
     },
   }
+  result.createNext();
+  return result;
 };
 
 module.exports = {

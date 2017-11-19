@@ -52,7 +52,7 @@ var solution_data = function(){
 
     chargroup_chars: [],
     rfs_chargroups: [],
-    char_constraints: [],
+    constraint_sources: [],
     constraint_values: [],
 
     clone: function() {
@@ -115,12 +115,19 @@ var solution_data = function(){
     chars_for_rfs: function(rfss){
       var sd = this;
       var res =  standardize(rfss,function(rfsid){
-        return ala("select char.* from ? as char join ? as chargroupchar on char.id=chargroupchar.[target] join ? as chargroup on chargroupchar.source=chargroup.id join ? as rfschargroup on chargroup.id=rfschargroup.[target] join ? as rfs on rfs.id=rfschargroup.source where rfs.id = ? ",[sd.chars,sd.chargroup_chars,sd.chargroups, sd.rfs_chargroups,sd.rfss, rfsid])
+        var ids =  ala("select distinct(char.id) as id from ? as char join ? as chargroupchar on char.id=chargroupchar.[target] join ? as chargroup on chargroupchar.source=chargroup.id join ? as rfschargroup on chargroup.id=rfschargroup.[target] join ? as rfs on rfs.id=rfschargroup.source where rfs.id = ? ",[sd.chars,sd.chargroup_chars,sd.chargroups, sd.rfs_chargroups,sd.rfss, rfsid])
+        var chars = ala("select char.* from ? as char join ? as charid on char.id=charid.id",[sd.chars,ids])
+        return chars;
       })
       return res.reduce((a, b) => a.concat(b), []);
     },
-    values_for_char: function(char){
-        return ala("select val.* from ? as val join ? as constraintvalues on val.id=constraintvalues.[target] join ? as constraints on constraintvalues.source=constraints.id join ? as charconstraints on constraints.id=charconstraints.[target] join ? as char on char.id=charconstraints.source where char.id = ? ",[this.rfss,this.constraint_values,this.constraints, this.char_constraints,this.chars, char.id])
+    values_for_char: function(chars){
+      var sd = this;
+      var res =  standardize(chars,function(charid){
+        var valueids = ala("select distinct(constraintvalues.[target]) as valueid from ? as constraintvalues join ? as constraintsources on constraintvalues.source=constraintsources.[target] where constraintsources.source = ? ",[sd.constraint_values,sd.constraint_sources, charid])        
+        return ala("select val.* from ? as val join ? as valueids on val.id=valueids.valueid ",[sd.charvalues,valueids])
+      })
+      return res.reduce((a, b) => a.concat(b), []);
     },
 
     setCXs: function(data){
@@ -298,9 +305,15 @@ var solution_data = function(){
       })
       return res.reduce((a, b) => a.concat(b), []);
     },
-    addRFSQualification(rfs,qualificationService){
-      var rel = {source: rfs.id,target: qualificationService.id}
-      this.rfs_qualifications.push(rel);
+    addRFSQualification(rfss,qualificationServices){
+      var sd= this;
+      var res = standardize(rfss,function(rfsid){
+        return standardize(qualificationServices,function(qualificationServiceid){
+          var rel = {source: rfsid,target: qualificationServiceid}
+          sd.rfs_qualifications.push(rel);
+        })
+      })
+    return res.reduce((a,b)=>a.concat(b),[])
     },
     addQualificationComponent(qualifications,components){
       var sd = this;
@@ -339,7 +352,7 @@ var solution_data = function(){
       var sd = this;
       return standardize(chars,function(char){
         var rel = {source: char,target:constraint}
-        sd.char_constraints.push(rel);
+        sd.constraint_sources.push(rel);
         return rel;
       })
     },
