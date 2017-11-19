@@ -1,10 +1,16 @@
 # Components
 
+## Solution Catalogue Data
+
+This module describes the meta model within which solutions are defined
+
+[see SolutionData](./SolutionData.md)
+
 ## Inventory Repository
 
 The repository contains a representation of inventory of the enterprise on the master branch.
 
-Individual solutions will be represented as branches.
+In progress solutions will be represented as branches.
 
 ## Verification repository
 

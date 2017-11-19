@@ -1,4 +1,13 @@
-# Solution Catalogue data
+# Solution Catalogue Data
+
+Available solutions are defined through a catalogue of services.
+
+## Services
+
+Services are cateogorized as resource facing or customer facing.
+Services are defined through a service specification.
+
+The intention is that services are defined at the resource or technical layer but what are exposed to customers are the customer facing services.
 
 ## Characteristics
 
@@ -33,4 +42,4 @@ Constraints can constrain the Characteristic Values which are valid for services
 
 ## Service Characteristics
 
-Services require values for all charactistics associated to all characteritic groups associated to the service
+Services require values for all charactistics associated to all characteristic groups associated to the service
