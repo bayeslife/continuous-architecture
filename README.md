@@ -16,10 +16,7 @@ The second is needed to inform and influence stakeholders in making business dec
 
 The third is a mechanism to allow architects to govern the services which are released to ensure consistency with design.
 
-## Usage
 
-Clone the repository
-Run npm install
 
 ## Paradigm
 
@@ -45,3 +42,8 @@ Here is a list of verifications which can be realized to achieve the outcomes.
 Here is a proposed set of components which can be used to realize the paradigm.
 
 [see Components](./Components.md)
+
+
+## Usage
+
+<todo>
