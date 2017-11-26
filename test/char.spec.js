@@ -58,7 +58,7 @@ describe('Characteristic values may be constrained', function() {
       sd.addConstraintSource(charid,constraintid);
       sd.addConstraintTarget(constraintid,[charvalue1id,charvalue2id]);
     })
-    describe.only('When the RFS Spec has a separate constraint only allowing one of the 2 values', function() {
+    describe('When the RFS Spec has a separate constraint only allowing one of the 2 values', function() {
       before(function(){
         var rfsconstraintid = 'rfsmusthave';
         sd.addConstraint(rfsconstraintid);
@@ -66,7 +66,7 @@ describe('Characteristic values may be constrained', function() {
         sd.addConstraintTarget(rfsconstraintid,charvalue2id)
       });
       it('Then the RFS Spec only allows the single value', function() {
-          
+
       });
     });
   });
