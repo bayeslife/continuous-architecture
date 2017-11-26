@@ -36,8 +36,10 @@ Here is a list of verifications which can be realized to achieve the outcomes.
 
 Here is a proposed set of components which can be used to realize the paradigm.
 
-[see Components](./Components.md)
+### Exampes
+
+[see Examples](./Example.md)
 
 ## Usage
 
-<todo>
+todo
