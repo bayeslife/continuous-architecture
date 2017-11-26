@@ -1,10 +1,9 @@
-## Verifiable Architecture Constraints
-
+# Verifiable Architecture Constraints
 
 ## Product-service-resource Mapping
 
 As an architect I want every product to be related to resource or CFS so that I can ensure that dependencies are met.
-As an architect I want every cfs to be associated with 1 or more rfs so that I can ensure that dependencies are met.
+As an architect I want every cfs to be associated with 1 or more rfs so that I can ensure that it is realizable.
 
 
 ## Qualification
@@ -13,8 +12,9 @@ As an architect I want services with associated qualifications to be available t
 
 ## Ordering
 
-As an architect I want a service to be available to order each product so that I know it is orderable.
+As an architect I want a service (capability) to be available to order each product so that I know it is orderable.
 As an architect I want a service to be available to capture the customer details so that the customer can be billed and supported.
+
 
 
 ## Provisioning
@@ -23,13 +23,13 @@ As an architect I want a service to be available to process the order so that th
 
 ## Service mapping
 
-As an architect I want to ensure that all physical services are mapped to components so that I can ensure they are realizable.
+As an architect I want to ensure that all resource facing services are mapped to components and resources so that I can ensure they are realizable.
 
 ## Inventory alignment
 
-All services identified as existing relate to functionality provided in production.
+All service specifications identified as existing relate to functionality provided in production.
 
-A solution can reference services which are identified as in production, in development by other projects or to be developed as part of the solution.
+A solution can reference service specifications which are identified as in production, in development by other projects or to be developed as part of the solution.
 
 This verification step can itemize that all solution services are identified as being on one of these 3 states.
 

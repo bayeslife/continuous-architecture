@@ -16,8 +16,6 @@ The second is needed to inform and influence stakeholders in making business dec
 
 The third is a mechanism to allow architects to govern the services which are released to ensure consistency with design.
 
-
-
 ## Paradigm
 
 ### Solution Catalogue Data
@@ -25,7 +23,6 @@ The third is a mechanism to allow architects to govern the services which are re
 This module describes functionality with respect to a catalogue of solution data.
 
 [see SolutionData](./SolutionData.md)
-
 
 ### Verifications
 
@@ -35,14 +32,11 @@ Here is a list of verifications which can be realized to achieve the outcomes.
 
 [see Verifications](./Verifications.md)
 
-
-
 ### Components
 
 Here is a proposed set of components which can be used to realize the paradigm.
 
 [see Components](./Components.md)
-
 
 ## Usage
 

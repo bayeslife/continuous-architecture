@@ -124,7 +124,7 @@ var solution_data = function(){
     values_for_char: function(chars){
       var sd = this;
       var res =  standardize(chars,function(charid){
-        var valueids = ala("select distinct(constraintvalues.[target]) as valueid from ? as constraintvalues join ? as constraintsources on constraintvalues.source=constraintsources.[target] where constraintsources.source = ? ",[sd.constraint_values,sd.constraint_sources, charid])        
+        var valueids = ala("select distinct(constraintvalues.[target]) as valueid from ? as constraintvalues join ? as constraintsources on constraintvalues.source=constraintsources.[target] where constraintsources.source = ? ",[sd.constraint_values,sd.constraint_sources, charid])
         return ala("select val.* from ? as val join ? as valueids on val.id=valueids.valueid ",[sd.charvalues,valueids])
       })
       return res.reduce((a, b) => a.concat(b), []);
@@ -364,6 +364,15 @@ var solution_data = function(){
         return rel;
       })
     }
+    //,
+    // validCharacteristicValue(charids){
+    //   var sd = this;
+    //   return standardize(values,function(charid){
+    //     var values = char_for_values(charid);
+    //     var valueids = ala("select distinct(constraintvalues.[target]) as valueid from ? as constraintvalues join ? as constraintsources on constraintvalues.source=constraintsources.[target] where constraintsources.source = ? ",[sd.constraint_values,sd.constraint_sources, charid])
+    //     return ala("select val.* from ? as val join ? as valueids on val.id=valueids.valueid ",[sd.charvalues,valueids])
+    //   }
+    // }
   }
 }
 
