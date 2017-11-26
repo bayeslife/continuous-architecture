@@ -23,4 +23,4 @@ The following is a diagram relates
 
 The PIP is defined by a collection of characteristics. Some map to services, some are specific to the PIP itself.  Likewise the access and provider edge router are defined similarly.
 
-![PIP Characteristics](./images/PIP-Characteristic Mapping.png "PIP Characteristics")
+![PIP Characteristics](./images/PIP-CharacteristicMapping.png "PIP Characteristics")
