@@ -6,7 +6,7 @@ The following customer facing services have been identified to inform the custom
 
 
 
-![ServiceCatalogueTopology](./images/Service Catalogue-Topology.png "Service Catalogue Topology")
+![ServiceCatalogueTopology](./images/ServiceCatalogue-Topology.png "Service Catalogue Topology")
 
 When services are instantiated a chain service dependencies are formed.
 
